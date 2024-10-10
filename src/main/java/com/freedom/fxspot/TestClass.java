@@ -3,12 +3,12 @@ package com.freedom.fxspot;
 import com.freedom.fxspot.model.FXSpot;
 import com.freedom.fxspot.repository.FxSpotRepository;
 import com.freedom.fxspot.repository.FxSpotStorageStrategy;
-import com.freedom.fxspot.repository.impl.DataBaseRepositoryStrategy;
 import com.freedom.fxspot.repository.impl.FxSpotRepositoryWithStrategy;
 import com.freedom.fxspot.repository.impl.InMemoryStorageStrategy;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 public class TestClass {
@@ -21,15 +21,11 @@ public class TestClass {
 
         FxSpotRepository repository = new FxSpotRepositoryWithStrategy(storageStrategy);
 
-        FXSpot fxSpot = new FXSpot(
-                "USD",
-                "CNY",
-                new BigDecimal("70.32"),
-                LocalDateTime.of(2024, 10, 1, 15, 18, 3),
-                List.of("latest", "updated", "important")
-        );
+        FXSpot fxSpot1 = new FXSpot("USD", "CNY", new BigDecimal("100.32"), LocalDateTime.now(), Arrays.asList("latest", "important"));
+        FXSpot fxSpot2 = new FXSpot("USD", "CNY", new BigDecimal("101.50"), LocalDateTime.now().minusHours(1), Arrays.asList("updated"));
 
-        repository.addFxSpot(fxSpot);
+        repository.addFxSpot(fxSpot1);
+        repository.addFxSpot(fxSpot2);
 
         List<FXSpot> retrievedFxSpots = repository.getFxSpotsByCurrencyPair("USD", "CNY");
 
